@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +57,7 @@ ROOT_URLCONF = 'table_form.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [r'C:\Users\Prachi\OneDrive\Desktop\table\table_form\Template'],
+        'DIRS': [r'C:\Users\hp\PycharmProjects\diet_div\table_form\Template'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -71,7 +72,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'table_form.wsgi.application'
 
-
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
