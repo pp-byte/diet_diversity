@@ -6,3 +6,5 @@ def get_list():
     for i in df['recipe'].unique():
         l.append((i,i))
     return l
+
+

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<body>
+<a href=""{% url 'hindi' %}"><div id="google_translate_element"></div></a>
+{% comment %} <a href=""{% url 'hindi' %}" class="dropdown-trigger" data-target="dropdown">language<i class="material-icons right">arrow_drop_down</i></a></div> {% endcomment %}
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>

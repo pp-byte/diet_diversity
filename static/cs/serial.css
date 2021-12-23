@@ -1,0 +1,47 @@
+.table {
+    counter-reset: serial-number; /* Set the serial number counter to 0 */
+       }
+   .table td:first-child:after {
+    counter-increment: serial-number; /* Increment the serial number counter */
+    content: counter(serial-number); /* Display the counter */
+    }
+
+    table{
+        font-size: 13px;
+        text-align: center;
+        width: 95%;
+        margin: auto;
+        text-align: center;
+        border: 0;
+        border-spacing: 0;
+        border-collapse: collapse;
+        table-layout: fixed;
+    } 
+    th {
+        padding: 0;
+      }
+      caption {
+        color: #002B7F;
+        font-weight: bold;
+      }
+      caption,
+      th {
+        text-align: center;
+      }
+      thead {
+        background-color: #007C66;
+        color: white;
+      }
+    
+    /*Make alternating colors for the table rows*/
+    .table tr:nth-child(odd){
+        background: #B8CAE4
+    }
+    .table tr:nth-child(even){
+        background: #dae5f4
+    }
+    
+    th {
+      background-color: #337ab7;
+      color: white;
+    }

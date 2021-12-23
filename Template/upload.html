@@ -1,0 +1,96 @@
+{% extends 'base.html'%}
+{% load static%}
+{% block content %}
+
+<head>  <link type="text/css" href="{% static 'home/css/style.css' %}" rel="stylesheet">
+<style>
+   #form{
+      width:40%;
+    }
+    #form label{
+      color: black;
+      font-size: 18px;
+    }
+  
+  
+</style>
+</head>
+
+  <!-- add  side nav -->
+  <div id="side-form" class="center">
+    <div >
+      <form id ='form' class="container section" enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        <label for="img" id="selectimg" style="font-size:14px; padding-right:20px;">Browse image from your device:</label>
+        <input type="file"  accept="image/*" name="picture" id="file"  onchange="loadFile(event)" required>
+        <p><img id="output" width="300"/></p>
+
+                  <script>
+                  var loadFile = function(event) {
+                    var image = document.getElementById('output');
+                    image.src = URL.createObjectURL(event.target.files[0]);
+                    document.getElementById("selectimg").style.display="none";
+                  };
+                  </script>
+
+        <div class="input-field">
+          <input placeholder="Enter your name" id="name" type="text" name="name" required>
+          <label for="title">Name</label>
+        </div>          
+        <div class="input-field">
+          <input placeholder="Enter the name of the consistency(if any)" id="wellnm" type="text" name="well_nm">
+          <label for="title">Name of the consistency</label>
+        </div>
+        <div class="input-section center">
+        <a id="location-btn" class="waves-effect waves-light btn-small" style=" background-color: #4CAF50; visibility: hidden;">Get Location</a>
+
+          <div class="preloader-wrapper small active" id="location-loader">
+            <div class="spinner-layer spinner-green-only">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        
+        <div class="input-field center">
+          <button class="btn-small" type="submit" name="action" style=" background-color: #4169E1;">Submit</button>
+        </div>
+        
+      </form>
+      <script>
+        window.onload = function(){
+  document.getElementById('location-btn').click();
+}
+      </script>
+    </div>
+
+
+    <div class="center">
+      <a class="btn-floating btn-small btn-large close-btn">
+        <i class="material-icons" style=" background-color: #4169E1;">close</i>
+      </a>
+    </div>
+  </div>
+ 
+  {% block javascript %}
+{% if messages %}
+{% for message in messages %}
+    
+{% if messages %}
+{% for message in messages %}
+  <script>M.toast({html: "{{message}}", classes: 'green rounded', displayLength:2000});</script>
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endblock javascript %}
+{% endblock %}
+
+  

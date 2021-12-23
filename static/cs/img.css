@@ -1,0 +1,14 @@
+select.icon-menu option {
+    background-repeat:no-repeat;
+    background-position:bottom left;
+    padding-left:30px;
+    }
+    select#Consistency choice[value="thick"] {
+    background-image:url(https://www.google.co.in/url?sa=i&url=https%3A%2F%2Fwww.shutterstock.com%2Fsearch%2Fusa%2Bflag&psig=AOvVaw25Fhvay-MgAHt4uWC7qD14&ust=1639146373760000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCJCl-pz21vQCFQAAAAAdAAAAABAD);
+    }
+    select#Consistency choice[value="normal"] {
+    background-image:url(flags/india.png);
+    }
+    select#Consistency choice[value="thin"] {
+    background-image:url(flags/india.png);
+    }

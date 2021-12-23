@@ -1,0 +1,137 @@
+{% extends 'base.html'%}
+{% load static%}
+{% block content %}
+
+<head>  <link type="text/css" href="{% static 'home/css/style.css' %}" rel="stylesheet">
+  <style>
+    #form{
+      width:40%;
+    }
+    #form label{
+      color: black;
+      font-size: 18px;
+    }
+      
+  </style>
+</head>
+  <!-- recipes -->
+  <div class="recipes container text-darken-1">
+    <img src="{% static 'home/images/Diverse-Diet.jpeg'%}"
+           alt="Diet Diversity"
+           class="main-image">
+
+    <p class='msg-box'>Add Consistency Information</p>
+    <!-- <div class="card-panel recipe white row">
+      <img src="/img/dish.png" alt="recipe thumb">
+      <div class="recipe-details">
+        <div class="recipe-title">Edame Noodles</div>
+        <div class="recipe-ingredients">Edame Beans, Noodels, Garlic oil</div>
+      </div>
+      <div class="recipe-delete">
+        <i class="material-icons">delete_outline</i>
+      </div>
+    </div> -->
+  </div>
+
+  <div class="center">
+    <a class="btn-floating btn-small btn-large add-btn">
+      <i class="material-icons" style=" background-color: #4169E1;">add</i>
+    </a>
+  </div>
+
+  <!-- add  side nav -->
+  <div id="side-form" class="side-form">
+    <div class="image-options">
+      <div class="camera-div">
+        <a class="btn-floating btn-large capture-btn">
+          <i class="material-icons">camera_alt</i>
+        </a>
+        <hr style="width:50% ;text-align:center;">
+
+        <small>click image from your camera</small>
+      </div>
+      <div class="upload-div">
+        <a href="{% url 'uploadwellpic' %}" class="btn-floating  btn-large upload-btn">
+          <i class="material-icons">upload</i>
+        </a>
+        <hr style="width:50%;text-align:center;">
+        <small>Upload images</small>
+
+      </div>
+    </div>
+    <div class="capture-div" style='display:none'>
+      <form id = "form" class="container section" method="post">
+        {% csrf_token %}
+        <h6 >Add consistency Information</h6>
+        <div class="divider"></div>
+          <video id="player" autoplay></video>
+          <canvas id='canvas' width="320px" height="240px" name="myfile" required></canvas>
+          <div class="input-field center">
+            <a id="capture-btn" class="waves-effect waves-light btn-small" style=" background-color: #4169E1;">Capture</a>
+          </div>
+  
+          <div id='pick-image'>
+            <small>Allow Camera access to app</small>
+          </div>
+          <div class="input-field">
+            <input placeholder="Enter your name" id="name" type="text" name="name" required>
+            <label for="title">Name</label>
+          </div>          
+          <div class="input-field">
+            <input placeholder="Enter the name of the consistency(if any)" id="wellnm" type="text" name="well_nm">
+            <label for="title">Name of the consistency</label>
+          </div>
+          <div class="input-section center">
+          <a id="location-btn" class="waves-effect waves-light btn-small" style=" background-color: #4169E1; visibility: hidden;">Get Location</a>
+  
+  
+            <div class="preloader-wrapper small active" id="location-loader">
+              <div class="spinner-layer spinner-green-only">
+                <div class="circle-clipper left">
+                  <div class="circle"></div>
+                </div><div class="gap-patch">
+                  <div class="circle"></div>
+                </div><div class="circle-clipper right">
+                  <div class="circle"></div>
+                </div>
+              </div>
+            </div>
+  
+          </div>
+  
+          
+          <div class="input-field center">
+            <button class="btn-small" type="submit" name="action" style=" background-color: #4169E1;">Submit</button>
+          </div>
+      </form>
+      <script>
+        window.onload = function(){
+  document.getElementById('location-btn').click();
+}
+      </script>
+    </div>
+
+
+    
+    <!-- <div style="display:none ">
+      <form class="container section" enctype="multipart/form-data"method="post">
+        {% csrf_token %}
+          {{form.as_p}} 
+          
+    
+            
+          <button class="btn-small" type="submit" name="action" style=" background-color: #4CAF50;">Add</button>
+      </form>
+    </div> -->
+
+
+    <div class="center">
+      <a class="btn-floating btn-small btn-large close-btn">
+        <i class="material-icons" style=" background-color: #4169E1;">close</i>
+      </a>
+    </div>
+  </div> 
+ 
+  {% endblock %}
+
+  

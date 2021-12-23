@@ -18,10 +18,12 @@ recipe={
 
 }
 
-dish_name='Green gram curry'
-
+# dish_name='Green gram curry'
+dish_name=['Grenn gram curry','Paneer masala','Jowar soya dosa with sesame seed powder']
 def get_recipe(dish_name):
-    dish_name=dish_name.lower()
+    for i in range(len(dish_name)):
+        dish_name[i] = dish_name[i].lower()
+    # dish_name=dish_name.lower()
     recipe={}
     dfr=pd.read_csv('recipe.csv')
     df=dfr.copy()
@@ -29,9 +31,9 @@ def get_recipe(dish_name):
     df['recipe'] = df['recipe'].str.strip()
     df['ingredient'] = df['ingredient'].str.lower()
     df['recipe'] = df['recipe'].str.lower()
-    if dish_name in df['recipe'].values:
+    if dish_name[i] in df['recipe'].values:
         for ind in df.index:
-            if df['recipe'][ind]==dish_name:
+            if df['recipe'][ind]==dish_name[i]:
                 if df['measurement'][ind]=='g':
                     recipe[df['ingredient'][ind]]=df['quantity'][ind]/100
                 elif df['measurement'][ind]=='tsp':
@@ -93,4 +95,5 @@ def cal(recipe):
     return fin_val
 
 print(cal(get_recipe(dish_name)))
+
 

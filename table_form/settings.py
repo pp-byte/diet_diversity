@@ -31,15 +31,45 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+WAGTAIL_APPS = [
+    'wagtail.contrib.forms',
+    'wagtail.contrib.redirects',
+    'wagtail.embeds',
+    'wagtail.sites',
+    'wagtail.users',
+    'wagtail.snippets',
+    'wagtail.documents',
+    'wagtail.images',
+    'wagtail.search',
+    'wagtail.admin',
+    'wagtail.core',
+    'modelcluster',
+    'taggit',
+    'resources',
+]
+
+
 INSTALLED_APPS = [
     'form.apps.FormConfig',
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth',
+    'pwa',
+]+ WAGTAIL_APPS
+
+
+SITE_ID = 3
+
+WAGTAIL_MIDDLEWARE = [
+    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
 ]
 
 MIDDLEWARE = [
@@ -50,14 +80,15 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+]+WAGTAIL_MIDDLEWARE
 
 ROOT_URLCONF = 'table_form.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [r'C:\Users\hp\PycharmProjects\diet_div\table_form\Template'],
+        # 'DIRS': [r'C:\Users\hp\PycharmProjects\diet_div\table_form\Template'],
+        'DIRS': [r'C:\Users\Prachi\OneDrive\Desktop\diet_8dec\env\diet_diversity\Template'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -70,17 +101,32 @@ TEMPLATES = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
 WSGI_APPLICATION = 'table_form.wsgi.application'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR /'db.sqlite',
+        
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR /'db.sqlite',
-        
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'Diet',
+        'USER' : 'postgres',
+        'PASSWORD' : 'Pr@chi1234',
+        'HOST' : 'localhost',
+        'PORT' : '5432',
     }
 }
 
@@ -122,4 +168,40 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT =  os.path.join(BASE_DIR,"static/")
+# STATIC_ROOT =  os.path.join(BASE_DIR,"static/")
+STATICFILES_DIRS = (
+    BASE_DIR/ 'static',
+)
+
+STATIC_ROOT =  BASE_DIR/ 'staticfiles'
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
+
+PWA_SERVICE_WORKER_PATH = BASE_DIR/ 'static/serviceworker.js'
+
+PWA_APP_NAME = 'Diet Diversity'
+PWA_APP_DESCRIPTION = "DietDiversity PWA"
+PWA_APP_THEME_COLOR = '#000000'
+PWA_APP_BACKGROUND_COLOR = '#ffffff'
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_SCOPE = '/'
+PWA_APP_ORIENTATION = 'any'
+PWA_APP_START_URL = '/'
+PWA_APP_STATUS_BAR_COLOR = 'default'
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}

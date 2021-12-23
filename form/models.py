@@ -1,5 +1,9 @@
 from django.db import models
 from django.db.models.enums import Choices
+from PIL import Image
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import sys
 
 # Create your models here.
 Recipe_List=[('','Select'),
@@ -159,13 +163,44 @@ Consistency=[('','Select'),
 
 
 class table(models.Model): 
-     SrNo=models.IntegerField(default=5)
-     Recipe_List=models.CharField(max_length=122 ,null=True,blank=True )
-     Frequency_Days=models.IntegerField(default=1)
-     Frequency_Weeks=models.IntegerField(default=1)
-     Frequency_Months=models.IntegerField(default=2)
-     Amount=models.IntegerField(default=3)
-     Amount_Measure=models.IntegerField(default=4)
-     Consistency=models.CharField( max_length=122, default='thick',null=True,blank=True )
-     Remark=models.TextField(default='Test',null=True,blank=True)
+    #  SrNo=models.IntegerField(default=5)
+     recipe_name=models.CharField(max_length=122 ,null=True,blank=True)
+     daily_freq=models.IntegerField(default=1)
+     weekly_freq=models.IntegerField(default=1)
+     monthly_freq=models.IntegerField(default=2)
+     quan=models.IntegerField(default=3)
+    #  unit=models.IntegerField(default=4)
+     unit=models.CharField( max_length=122, default='pieces',null=True,blank=True )
+     consistency=models.CharField( max_length=122, default='thick',null=True,blank=True )
+     remark=models.TextField(default='Test',null=True,blank=True)
 
+class new_item(models.Model):
+    recipe_name=models.TextField(default='Test',null=True,blank=True)
+    daily_freq=models.IntegerField(default=1)
+    weekly_freq=models.IntegerField(default=1)
+    monthly_freq=models.IntegerField(default=2)
+    quan=models.IntegerField(default=3)
+    #  unit=models.IntegerField(default=4)
+    unit=models.CharField( max_length=122, default='pieces',null=True,blank=True )
+    consistency=models.CharField( max_length=122, default='thick',null=True,blank=True )
+    remark=models.TextField(default='Test',null=True,blank=True)
+
+
+
+class UploadWellPictureModel(models.Model):
+    picture = models.ImageField( upload_to='WellPics/', blank=True, null=True,default='WellPics/noImage.jpg')
+    name = models.CharField(max_length=100, blank=True, null=True)
+    well_nm = models.CharField(max_length=100, blank=True, null=True)
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.picture = self.compressImage(self.picture)
+        super(UploadWellPictureModel, self).save(*args, **kwargs)
+    def compressImage(self,picture):
+        imageTemproary = Image.open(picture)
+        imageTemproary = imageTemproary.convert('RGB')
+        outputIoStream = BytesIO()
+        imageTemproary = imageTemproary.resize( (1020,573) ) 
+        imageTemproary.save(outputIoStream , format='JPEG', quality=60)
+        outputIoStream.seek(0)
+        picture = InMemoryUploadedFile(outputIoStream,'ImageField', "%s.jpg" % picture.name.split('.')[0], 'image/jpeg', sys.getsizeof(outputIoStream), None)
+        return picture
