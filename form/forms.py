@@ -43,12 +43,8 @@ class chkform(forms.ModelForm):
     # weight_at_birth = forms.FloatField(label= 'Weight at Birth (in kg) ', max_value=100)
     recipe_name = forms.CharField(label='Select Item', widget=forms.Select(choices=recipe))
     # daily_freq = forms.IntegerField(label='Daily Frequency',widget=forms.TextInput(attrs={'disabled':'on'}))
-    daily_freq = forms.IntegerField(label='Daily Frequency')
-    
-    if (daily_freq!=0):
-        weekly_freq = forms.IntegerField(label='Weekly Frequency',widget=forms.TextInput(attrs={'disabled':'on'}))
-    else:
-       weekly_freq = forms.IntegerField(label='Weekly Frequency')
+    daily_freq = forms.IntegerField(label='Daily Frequency')   
+    weekly_freq = forms.IntegerField(label='Weekly Frequency')
     monthly_freq = forms.IntegerField(label='Monthly Frequency')
     quan=forms.IntegerField(label='Quantity')
     unit=forms.CharField(label='Measuring Unit',widget=forms.Select(choices=choice))
