@@ -1,7 +1,9 @@
 import io
+from typing import ValuesView
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib.auth.models import User
+from django.forms.fields import NullBooleanField
 # from form.views import new_recipe
 from .models import  UploadWellPictureModel, new_item,table
 from crispy_forms.helper import FormHelper
@@ -40,17 +42,24 @@ class chkform(forms.ModelForm):
     # previous_weight = forms.FloatField(label= 'Previous Weight (in kg) ', max_value=100)
     # weight_at_birth = forms.FloatField(label= 'Weight at Birth (in kg) ', max_value=100)
     recipe_name = forms.CharField(label='Select Item', widget=forms.Select(choices=recipe))
+    # daily_freq = forms.IntegerField(label='Daily Frequency',widget=forms.TextInput(attrs={'disabled':'on'}))
     daily_freq = forms.IntegerField(label='Daily Frequency')
-    weekly_freq = forms.IntegerField(label='Weekly Frequency')
+    
+    if (daily_freq!=0):
+        weekly_freq = forms.IntegerField(label='Weekly Frequency',widget=forms.TextInput(attrs={'disabled':'on'}))
+    else:
+       weekly_freq = forms.IntegerField(label='Weekly Frequency')
     monthly_freq = forms.IntegerField(label='Monthly Frequency')
     quan=forms.IntegerField(label='Quantity')
     unit=forms.CharField(label='Measuring Unit',widget=forms.Select(choices=choice))
     remark=forms.CharField(label='Remarks')
     # consistency=forms.CharField(label='Consistency',widget=forms.RadioSelect('cons'))
     consistency=forms.CharField(label='Consistency',widget=forms.Select(choices=cons))
+    class Meta:
+        model = table
+        fields=('recipe_name','daily_freq','weekly_freq','monthly_freq','quan','unit','remark','consistency')
     
-    
-    # dish_name=['Grenn gram curry','Paneer masala','Jowar soya dosa with sesame seed powder']
+        # dish_name=['Grenn gram curry','Paneer masala','Jowar soya dosa with sesame seed powder']
     
     # dish_name='Green gram curry'
     # def get_recipe(dish_name):
@@ -117,11 +126,6 @@ class chkform(forms.ModelForm):
     # print(cal(get_recipe(dish_name)))
 
 
-    class Meta:
-        model = table
-        fields=('recipe_name','daily_freq','weekly_freq','monthly_freq','quan','unit','remark','consistency')
-    
-
 
     # op=forms.CharField(label='op')
 
@@ -163,17 +167,10 @@ class chk(forms.Form):
     class Meta:
         model = new_item
         fields=('recipe_name','daily_freq','weekly_freq','monthly_freq','quan','unit','remark','consistency')
-    # like_website = forms.TypedChoiceField(
-    #     label = "Do you like this website?",
-    #     choices = ((1, "Yes"), (0, "No") ,(2,"Other")),
-    #     # coerce = lambda x: bool(int(x)),
-    #     widget = forms.RadioSelect,
-    #     initial = '1',
-    #     required = True,
-    # )
+    
 
 class UploadWellPictureForm(forms.ModelForm):
     class Meta:
         model = UploadWellPictureModel
         fields = ('picture','name','well_nm')
-
+           

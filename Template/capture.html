@@ -11,7 +11,9 @@
       color: black;
       font-size: 18px;
     }
-      
+  select#Consistency option[value="thick"]   { background-image:url(C:\Users\Prachi\OneDrive\Desktop\diet_8dec\env\diet_diversity\static\home\images\masoor-tadka-dal-4.jpg);   }
+  select#Consistency option[value="thin"]   { background-image:url(C:\Users\Prachi\OneDrive\Desktop\diet_8dec\env\diet_diversity\static\home\images\masoor-tadka-dal-4.jpg);   }
+  select#Consistency option[value="normal"]   { background-image:url(C:\Users\Prachi\OneDrive\Desktop\diet_8dec\env\diet_diversity\static\home\images\masoor-tadka-dal-4.jpg);   }   
   </style>
 </head>
   <!-- recipes -->
@@ -76,11 +78,31 @@
           <div class="input-field">
             <input placeholder="Enter your name" id="name" type="text" name="name" required>
             <label for="title">Name</label>
-          </div>          
+          </div> 
           <div class="input-field">
-            <input placeholder="Enter the name of the consistency(if any)" id="wellnm" type="text" name="well_nm">
-            <label for="title">Name of the consistency</label>
+            {% comment %} <input placeholder="" id="wellnm" type="list" name="well_nm"> {% endcomment %}
+            {% comment %} <label for="title">Name of the consistency        {% endcomment %}
+              {% comment %} <input list="Consistency" name="Consistency"> {% endcomment %}
+            <input list="wellnm" name="well_nm" type="dropdown">
+            <label for="title">Name of the consistency:</label>
+            <datalist id="wellnm">
+                  {% comment %} <datalist id="Consistency"> {% endcomment %}
+                    <option value="thick">
+                    <option value="thin">
+                    <option value="normal">
+            </datalist>
           </div>
+          <div class="input-field">
+          {% comment %} <input placeholder="Enter your name" id="nam" type="dropdown" name="nam"> {% endcomment %}
+            <div class="dropdown"> 
+             <input button class="btn btn-default dropdown-toggle" type="dropdown" data-toggle="dropdown"> 
+              <ul class="dropdown-menu" id="dropdown-menu ">
+                    <li><a href="#">HTML</a></li>
+                    <li><a href="#">CSS</a></li>
+                    <li><a href="#">JavaScript</a></li>
+              </ul>
+            </div>
+          </div> 
           <div class="input-section center">
           <a id="location-btn" class="waves-effect waves-light btn-small" style=" background-color: #4169E1; visibility: hidden;">Get Location</a>
   
@@ -103,6 +125,7 @@
           <div class="input-field center">
             <button class="btn-small" type="submit" name="action" style=" background-color: #4169E1;">Submit</button>
           </div>
+        {% comment %} <div id="preview_data" title="Preview Form Data" style="display:none;"></div> {% endcomment %}
       </form>
       <script>
         window.onload = function(){

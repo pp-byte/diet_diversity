@@ -194,44 +194,11 @@ th {
                   <form action="{% url 'new_recipe' %}" method="POST" >
                     {% csrf_token %}
                       {{ form|crispy }}
-                        {% comment %} <button class="btn dropdown-toggle btn-primary btn-sm" data-toggle="dropdown">
-                                Consistency
-                            </button>
-                         {% comment %} <ul> {% endcomment %}
-                         {% comment %} <ul class="dropdown-menu">
-                            {{ form.consistency|as_crispy_field }}  {% endcomment %}
-                               {% comment %} field.consistency.widget.input_type == 'choices' {% endcomment %}
-                            {% comment %} {% if field.consistency.widget.input_type == 'choices' %}
-                                {{ form.consistency|as_crispy_field }}
-                            {% else %}
-                              {{ field|as_crispy_field }} {% endcomment %}
-                            {% comment %} {% endif %} {% endcomment %}
-                            {% comment %} {%endfor%} {% endcomment %}
-                               {% comment %} {% if field.consistency.widget.input_type == 'choices' %}
-                               {% else %}
-                                  {{ form.consistency|as_crispy_field }}
-                               {% endif %} {% endcomment %}
-                            {% comment %} <a href="#">
-                                <img src=
-            "https://media.geeksforgeeks.org/wp-content/uploads/20200630132503/iflag.jpg"
-                                width="20" height="15"> thick</a>
-                            {{ form.quan|as_crispy_field }}
-                                <a href="#">
-                                    <img src=
-                "https://media.geeksforgeeks.org/wp-content/uploads/20200630132504/uflag.jpg"
-                                    width="20" height="15"> USA</a>
-                                <a href="#">
-                                    <img src=
-                "https://media.geeksforgeeks.org/wp-content/uploads/20200630132502/eflag.jpg"
-                                    width="20" height="15"> England</a> {% endcomment %}
-                        {% comment %} </ul> {% endcomment %}
                       
                       <input type="button" class="add-row" value="Add Item" style=" background-color: #4682B4;">
         
                       {% comment %} <input type="button" class="add-new-recipe" value="Add New Recipe"> {% endcomment %}
                       {% comment %} <option value="{{ widget.value|stringformat:'s' }}"{% include "django/forms/widgets/attrs.html" %}> {% endcomment %}
-                      {% comment %} <button class="add-new-recipe" type="button" id="new" name="add-item" value="Add New Recipe"><a href="/new_recipe" style="font-size: 14; color:#000000;">Add New Recipe</button> {% endcomment %}
-                      {% comment %} <button class="submit" type="submit" id="submit" name="submit" value="submit">Sign in</button> {% endcomment %}
                       {% comment %} <button type="button" onclick="tableToCSV()"> download CSV</button> {% endcomment %}
                   {% comment %} </form> {% endcomment %}
 
@@ -291,46 +258,6 @@ th {
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 
-
-    {% comment %} <script type="text/javascript">
-        function tableToCSV() {
- 
-            // Variable to store the final csv data
-            var csv_data = [];
- 
-            // Get each row data
-            var rows = document.getElementsByTagName('tr');
-            for (var i = 0; i < rows.length; i++) {
-                var cols = rows[i].querySelectorAll('td,th');
-                var csvrow = [];
-                for (var j = 0; j< cols.length; j++) {
-                    csvrow.push(cols[j].innerHTML);
-                }
-                csv_data.push(csvrow.join(","));
-            }
-            csv_data = csv_data.join('\n'); 
-            downloadCSVFile(csv_data);
-        }
-        function downloadCSVFile(csv_data) {
-            CSVFile = new Blob([csv_data], {
-                type: "text/csv"
-            });
-            var temp_link = document.createElement('a');
-            temp_link.download = "download.csv";
-            var url = window.URL.createObjectURL(CSVFile);
-            temp_link.href = url;
-            temp_link.style.display = "none";
-            document.body.appendChild(temp_link);
-            //document.body.removeChild(td:last-child, th:last-child); 
-            temp_link.click();
-            document.body.removeChild(temp_link);  {% endcomment %}
-        
-        {% comment %} function downloadCSVFile(csv_data){
-            var clonetable = document.clone();
-            clonetable.find('td:last-child, th:last-child').remove();
-            download_table_as_csv(clonetable); {% endcomment %}
-
-    {% comment %} </script> {% endcomment %}
 </body>
 </html>
 

@@ -110,6 +110,17 @@
 
         });
     </script>
+        {% comment %} var dis1 = document.getElementById("id_daily_freq");
+        dis1.onchange = function () {
+        if (this.value != "" || this.value.length > 0) {
+           document.getElementById("id_weekly_freq").disabled = true;
+        }
+    } {% endcomment %}
+    {% comment %} $('id_daily_freq').blur(function(){
+        if($(this).val().length != 0){
+            $('id_weekly_freq').attr('disabled', 'disabled');
+        }       
+    }); {% endcomment %}
 <style>
 {% comment %} .table {
     border-collapse: collapse;
@@ -144,7 +155,7 @@
     {% comment %} table-layout: fixed; {% endcomment %}
 } 
 th {
-	padding: 12px;
+	padding: 20px;
   }
   caption {
 	color: #002B7F;
@@ -188,7 +199,7 @@ th {
         <div class="col-md-10 offset-md-1 mt-5">
             <div class="jumbotron">
                 {% comment %} <h2 class="display-4" style="text-align: center; color: #4CAF50;">RECIPE FORM</h2> {% endcomment %}
-                <h2 class="heading" style="text-align: center; color: #4CAF50;"><b>RECIPE FORM </b></h2>
+                <h2 class="heading" style="text-align: center; color: #4682B4;"><b>RECIPE FORM </b></h2>
                 <!--p class="lead font-italic">Base data entry</p-->
                 <hr class="my-4">
                 {% block content %}
@@ -196,25 +207,11 @@ th {
                     {% csrf_token %}
                       {% comment %} <table>{{ form|crispy }} {% endcomment %}
                       {{ form|crispy }}
-                      {% comment %} {{ form.recipe_name|as_crispy_field }}
-                      {{ form.daily_freq|as_crispy_field }}
-                      {{ form.weekly_freq|as_crispy_field }}
-                      {{ form.monthly_freq|as_crispy_field }}
-                      {{ form.quan|as_crispy_field }}
-                      {{ form.unit|as_crispy_field }}
-                      {{ form.remark|as_crispy_field }} 
-                      {{ form.consistency|as_crispy_field }} {% endcomment %}
-                      {% comment %} </table> {% endcomment %}
                       <input type="button" class="add-row" value="Add Item" style=" background-color: #4682B4;">
                       {% comment %} <input type="button" class="add-new-recipe" value="Add New Recipe"> {% endcomment %}
                       {% comment %} <option value="{{ widget.value|stringformat:'s' }}"{% include "django/forms/widgets/attrs.html" %}> {% endcomment %}
-                        {% comment %} <button class="login-btn btn-large waves-effect waves-dark" style="width: 180px; background-color: #4CAF50;"><a href="/index" style="font-size: 14; color:#0645AD;"> Login</a></button> {% endcomment %}
-                        {% comment %} <button class="add-new" type="button" id="new" name="add-item" value="Add New Recipe"><a href="/new_recipe" style="font-size: 14; color:#000000;">Add New Recipe</button> {% endcomment %}
+                        
                      <button class="add-new-recipe" type="button" id="new" name="add-item" value="Add New Recipe" style=" background-color: #4682B4;"><a href="/new_recipe" style="font-size: 14; color:#000000;">Add New Recipe</a></button> 
-                        {% comment %} <button class="submit" type="submit" id="submit" name="submit" value="submit" style=" background-color: #4CAF50;"><a href="/new_recipe" style="font-size: 14; color:#000000;">Add New Recipe</a></button> {% endcomment %}
-                      {% comment %} <button type="button" onclick="tableToCSV()"> download CSV</button> {% endcomment %}
-                  {% comment %} </form> {% endcomment %}
-
 
                 {% endblock content %}
             </div>

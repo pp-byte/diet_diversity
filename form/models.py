@@ -4,7 +4,7 @@ from PIL import Image
 from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import sys
-
+from django.contrib.auth.models import User
 # Create your models here.
 Recipe_List=[('','Select'),
 ("Roti","Roti"),
@@ -204,3 +204,8 @@ class UploadWellPictureModel(models.Model):
         outputIoStream.seek(0)
         picture = InMemoryUploadedFile(outputIoStream,'ImageField', "%s.jpg" % picture.name.split('.')[0], 'image/jpeg', sys.getsizeof(outputIoStream), None)
         return picture
+
+class Profile(models.Model):
+    user = models.OneToOneField(User ,on_delete=models.CASCADE)
+    mobile = models.CharField(max_length=20)
+    otp = models.CharField(max_length=6)

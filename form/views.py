@@ -1,23 +1,29 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from .forms import chk, chkform
 
 from .models import table,new_item
 from .forms import AddressForm
 from django.contrib.auth import login, authenticate ,logout
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.models import auth
+from django.contrib.auth.models import auth,User
 from django.contrib import messages
-from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login,logout
 from .forms import CreateUserForm
 from .forms import  UploadWellPictureForm
-from .models import UploadWellPictureModel
+from .models import UploadWellPictureModel,Profile
 import re
+import random
+
+import http.client
+
+from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import FileSystemStorage
 import base64
 import time
-
+from django.http import HttpResponse
+from django.core.mail import send_mail
+import math, random
 
 # def include(request):
 #     if request.method=="POST":
@@ -93,17 +99,17 @@ def index(request):
 # 	return render(request=request, template_name="login.html", context={"form":form})
 
 
-def register_request(request):
-    form = CreateUserForm()
-    if request.method == 'POST':
-        form = CreateUserForm(request.POST)
-        if form.is_valid():
-            form.save()
-            user = form.cleaned_data.get('email')
-            messages.success(request, "Account was created for " + user)
-            return redirect('login')
-    context = {'form':form}
-    return render(request, "register.html", context)
+# def register_request(request):
+#     form = CreateUserForm()
+#     if request.method == 'POST':
+#         form = CreateUserForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             user = form.cleaned_data.get('email')
+#             messages.success(request, "Account was created for " + user)
+#             return redirect('login')
+#     context = {'form':form}
+#     return render(request, "register.html", context)
 
 def new_recipe(request):
     form=chk()
@@ -134,23 +140,23 @@ def new_recipe(request):
     # if request.method == "POST":
     return render(request,'new_recipe.html', context={"form":form})
 
-def login_request(request):
-	if request.method == "POST":
-		form = AuthenticationForm(request, data=request.POST)
-		if form.is_valid():
-			username = form.cleaned_data.get('username')
-			password = form.cleaned_data.get('password')
-			user = authenticate(username=username, password=password)
-			if user is not None:
-				login(request, user)
-				messages.info(request, f"You are now logged in as {username}.")
-				return redirect("/")
-			else:
-				messages.error(request,"Invalid username or password.")
-		else:
-			messages.error(request,"Invalid username or password.")
-	form = AuthenticationForm()
-	return render(request=request, template_name="login.html", context={"login_form":form})
+# def login_request(request):
+# 	if request.method == "POST":
+# 		form = AuthenticationForm(request, data=request.POST)
+# 		if form.is_valid():
+# 			username = form.cleaned_data.get('username')
+# 			password = form.cleaned_data.get('password')
+# 			user = authenticate(username=username, password=password)
+# 			if user is not None:
+# 				login(request, user)
+# 				messages.info(request, f"You are now logged in as {username}.")
+# 				return redirect("/")
+# 			else:
+# 				messages.error(request,"Invalid username or password.")
+# 		else:
+# 			messages.error(request,"Invalid username or password.")
+# 	form = AuthenticationForm()
+# 	return render(request=request, template_name="login.html", context={"login_form":form})
 
 def logout(request):
     auth.logout(request)
@@ -199,3 +205,117 @@ def uploadwellpic(request):
     else:
         form = UploadWellPictureForm()
     return render(request,'upload.html',{})
+
+
+# def generateOTP() :
+#     digits = "0123456789"
+#     OTP = ""
+#     for i in range(4) :
+#         OTP += digits[math.floor(random.random() * 10)]
+#     return OTP
+
+# def send(request):
+#     email=request.GET.get("email")
+#     o=generateOTP()
+#     htmlgen = '<p>Your OTP is <strong>'+o+'</strong></p>'
+#     send_mail('OTP request',o,'<gmail id>',[email],fail_silently=False,html_message=htmlgen)
+#     return HttpResponse(o)
+
+# def otp(request):
+#     return render(request, "otp.html")
+
+
+
+def send_otp(mobile , otp):
+    print("FUNCTION CALLED")
+    conn = http.client.HTTPSConnection("api.msg91.com")
+    # authkey = settings.authKey
+    headers = { 'content-type': "application/json" }
+    # payload = "{\"Value1\":\"Param1\",\"Value2\":\"Param2\",\"Value3\":\"Param3\"}"
+    # conn.request("GET", "/api/v5/otp?template_id=&mobile=&authkey=mobile",headers)
+    url = "http://control.msg91.com/api/sendotp.php?otp="+otp+"&message="+"Your otp is "+otp +"&mobile="+mobile+"&authkey="+mobile+"&country=91"
+    conn.request("GET", url , headers=headers)
+    res = conn.getresponse()
+    data = res.read()
+    print(data.decode("utf-8"))
+    return None
+
+
+
+def login_attempt(request):
+    if request.method == 'POST':
+        mobile = request.POST.get('mobile')
+        
+        user = Profile.objects.filter(mobile = mobile).first()
+        
+        if user is None:
+            context = {'message' : 'User not found' , 'class' : 'danger' }
+            return render(request,'logins.html' , context)
+        
+        otp = str(random.randint(1000 , 9999))
+        user.otp = otp
+        user.save()
+        # send_otp(mobile , otp)
+        request.session['mobile'] = mobile
+        return redirect('/login_otp')        
+    return render(request,'logins.html')
+
+
+def login_otp(request):
+    mobile = request.session['mobile']
+    context = {'mobile':mobile}
+    if request.method == 'POST':
+        otp = request.POST.get('otp')
+        profile = Profile.objects.filter(mobile=mobile).first()
+        
+        if otp == profile.otp:
+            user = User.objects.get(id = profile.user.id)
+            login(request , user)
+            return redirect('/')
+        else:
+            context = {'message' : 'Wrong OTP' , 'class' : 'danger','mobile':mobile }
+            return render(request,'login_otp.html' , context)
+    
+    return render(request,'login_otp.html' , context)
+    
+    
+
+def register_otp(request):
+    if request.method == 'POST':
+        password = request.POST.get('password')
+        username = request.POST.get('username')
+        mobile = request.POST.get('mobile')
+        
+        check_user = User.objects.filter(password=password).first()
+        check_profile = Profile.objects.filter(mobile = mobile).first()
+        
+        if check_user or check_profile:
+            context = {'message' : 'User already exists' , 'class' : 'danger' }
+            return render(request,'register_otp.html' , context)
+            
+        user = User(password=password, username = username)
+        user.save()
+        otp = str(random.randint(1000 , 9999))
+        profile = Profile(user = user , mobile=mobile , otp = otp) 
+        profile.save()
+        # send_otp(mobile, otp)
+        request.session['mobile'] = mobile
+        return redirect('otps')
+    return render(request,'register_otp.html')
+
+def otps(request):
+    mobile = request.session['mobile']
+    context = {'mobile':mobile}
+    if request.method == 'POST':
+        otp = request.POST.get('otp')
+        profile = Profile.objects.filter(mobile=mobile).first()
+        if otp == profile.otp:
+            return redirect('/')
+        else:
+            print('Wrong')
+            
+            context = {'message' : 'Wrong OTP' , 'class' : 'danger','mobile':mobile }
+            return render(request,'otps.html' , context)
+            
+        
+    return render(request,'otps.html' , context)

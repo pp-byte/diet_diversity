@@ -94,7 +94,7 @@
       <!--<a href="/" style="text-decoration: none;"><span style="color: white;  font-weight: bold; font-size: 22px; text-align: left;">PoshanVatika</span></a>-->
       <ul id="topnav" class="right hide-on-med-and-down" style="align-items: center;"> 
        <li><a href="{% url 'about' %}" class="waves-effect">About</a></li>
-      <li> <a href="" class="dropdown-trigger" data-target="dropdown">language<i class="material-icons right">arrow_drop_down</i></a></li>
+      {% comment %} <li> <a href="" class="dropdown-trigger" data-target="dropdown">language<i class="material-icons right">arrow_drop_down</i></a></li> {% endcomment %}
       <li><span class="right grey-text text-darken-1">
         <a><i class="material-icons sidenav-trigger" data-target="side-menu">menu</i></a>
       </span></li>
@@ -117,8 +117,8 @@
    
     <li><a href="{% url 'logout' %}" class="waves-effect">Logout</a></li>
     {% else %}
-    <li><a href="{% url 'login' %}" class="waves-effect">Login</a></li>
-    <li><a href="{% url 'register' %}" class="waves-effect">Register</a></li>
+    <li><a href="{% url 'logins' %}" class="waves-effect">Login</a></li>
+    <li><a href="{% url 'register_otp' %}" class="waves-effect">Register</a></li>
     {% endif %}
 
     <li>
@@ -157,8 +157,8 @@
    
     <li><a href="{% url 'logout' %}" class="waves-effect">Logout</a></li>
     {% else %}
-    <li><a href="{% url 'login' %}" class="waves-effect">Login</a></li>
-    <li><a href="{% url 'register' %}" class="waves-effect">Register</a></li>
+    <li><a href="{% url 'logins' %}" class="waves-effect">Login</a></li>
+    <li><a href="{% url 'register_otp' %}" class="waves-effect">Register</a></li>
     {% endif %}
 
     <li>
